@@ -1,74 +1,105 @@
-# from nicegui import ui
-
-# def create_navbar():
-
-#     with ui.header().classes(
-#         "bg-white shadow-lg items-center justify-between px-10 py-4"
-#     ):
-
-#         with ui.row().classes("items-center gap-3"):
-
-#             ui.icon("agriculture", color="green").classes("text-4xl")
-
-#             ui.label(
-#                 "Harvester Connect"
-#             ).classes(
-#                 "text-2xl font-bold text-green-700"
-#             )
-
-#         with ui.row().classes("items-center gap-8"):
-
-#             ui.link("Home", "#hero")
-
-#             ui.link("About", "#about")
-
-#             ui.link("Features", "#features")
-
-#             ui.link("Farmers", "#farmers")
-
-#             ui.link("Owners", "#owners")
-
-#             ui.link("Contact", "#contact")
-
-#             ui.select(
-#                 ["English", "తెలుగు", "हिन्दी"],
-#                 value="English",
-#             ).props("dense outlined")
-
-#             ui.switch().props("color=green").tooltip("Dark Mode")
-
 from nicegui import ui
+
 dark = ui.dark_mode()
+
 
 def create_navbar():
 
-    with ui.header().classes(
-        """
+    ############################################################
+    # Mobile Drawer
+    ############################################################
+
+    with ui.left_drawer(value=False).classes("bg-white w-72 shadow-xl") as drawer:
+
+        ui.label("Harvester Connect").classes(
+            "text-2xl font-bold text-green-700 px-6 pt-6"
+        )
+
+        ui.separator().classes("my-4")
+
+        links = [
+            ("🏠 Home", "#hero"),
+            ("ℹ About", "#about"),
+            ("⭐ Features", "#features"),
+            ("🚜 Farmers", "#farmers"),
+            ("👨‍🌾 Owners", "#owners"),
+            ("📞 Contact", "#contact"),
+        ]
+
+        for text, target in links:
+            ui.link(text, target).classes(
+                """
+                block
+                px-6
+                py-3
+                text-lg
+                no-underline
+                text-gray-700
+                hover:bg-green-50
+                hover:text-green-700
+                rounded-lg
+                transition-all
+                """
+            )
+
+        ui.separator().classes("my-4")
+
+        ui.select(
+            ["English", "తెలుగు", "हिन्दी"],
+            value="English",
+        ).props("outlined dense").classes("mx-5")
+
+        ui.switch(
+            "Dark Mode",
+            value=False,
+            on_change=lambda e: dark.set_value(e.value),
+        ).classes("mx-5 mt-4")
+
+    ############################################################
+    # Header
+    ############################################################
+
+    with ui.header().classes("""
         bg-white
         shadow-md
-        items-center
-        justify-between
-        px-10
-        py-3
         fixed
         top-0
+        left-0
+        right-0
         z-50
-        """
-    ):
+        px-4
+        sm:px-6
+        md:px-8
+        lg:px-10
+        py-3
+        items-center
+        justify-between
+    """):
 
-        #################################################
-        # LEFT LOGO
-        #################################################
+        ########################################################
+        # Left
+        ########################################################
 
-        with ui.row().classes(
-            "items-center gap-3"
-        ):
+        with ui.row().classes("items-center gap-3"):
+
+            ui.button(
+                icon="menu",
+                on_click=drawer.toggle,
+            ).props(
+                "flat round"
+            ).classes(
+                "lg:hidden"
+            )
 
             ui.icon(
                 "agriculture",
                 color="green",
             ).classes(
-                "text-5xl"
+                """
+                text-3xl
+                sm:text-4xl
+                md:text-5xl
+                """
             )
 
             with ui.column().classes("gap-0"):
@@ -76,89 +107,89 @@ def create_navbar():
                 ui.label(
                     "Harvester Connect"
                 ).classes(
-                    "text-2xl font-bold text-green-700"
+                    """
+                    text-lg
+                    sm:text-xl
+                    md:text-2xl
+                    font-bold
+                    text-green-700
+                    """
                 )
 
                 ui.label(
                     "Smart Agriculture Platform"
                 ).classes(
-                    "text-xs text-gray-500"
+                    """
+                    hidden
+                    sm:block
+                    text-xs
+                    text-gray-500
+                    """
                 )
 
-        #################################################
-        # CENTER MENU
-        #################################################
+        ########################################################
+        # Desktop Menu
+        ########################################################
 
-        with ui.row().classes(
-            "items-center gap-8 text-lg"
-        ):
+        with ui.row().classes("""
+            hidden
+            lg:flex
+            items-center
+            gap-6
+            xl:gap-8
+            text-base
+            xl:text-lg
+        """):
 
-            ui.link(
-                "🏠 Home",
-                "#hero",
-            ).classes(
-                "text-gray-700 hover:text-green-700 no-underline font-medium"
-            )
+            menu = [
+                ("🏠 Home", "#hero"),
+                ("ℹ About", "#about"),
+                ("⭐ Features", "#features"),
+                ("🚜 Farmers", "#farmers"),
+                ("👨‍🌾 Owners", "#owners"),
+                ("📞 Contact", "#contact"),
+            ]
 
-            ui.link(
-                "ℹ About",
-                "#about",
-            ).classes(
-                "text-gray-700 hover:text-green-700 no-underline font-medium"
-            )
+            for text, link in menu:
 
-            ui.link(
-                "⭐ Features",
-                "#features",
-            ).classes(
-                "text-gray-700 hover:text-green-700 no-underline font-medium"
-            )
+                ui.link(text, link).classes("""
+                    text-gray-700
+                    hover:text-green-700
+                    no-underline
+                    font-medium
+                    transition-colors
+                    duration-200
+                """)
 
-            ui.link(
-                "🚜 Farmers",
-                "#farmers",
-            ).classes(
-                "text-gray-700 hover:text-green-700 no-underline font-medium"
-            )
+        ########################################################
+        # Right
+        ########################################################
 
-            ui.link(
-                "👨‍🌾 Owners",
-                "#owners",
-            ).classes(
-                "text-gray-700 hover:text-green-700 no-underline font-medium"
-            )
-
-            ui.link(
-                "📞 Contact",
-                "#contact",
-            ).classes(
-                "text-gray-700 hover:text-green-700 no-underline font-medium"
-            )
-
-        #################################################
-        # RIGHT
-        #################################################
-
-        with ui.row().classes(
-            "items-center gap-4"
-        ):
+        with ui.row().classes("""
+            hidden
+            md:flex
+            items-center
+            gap-3
+        """):
 
             ui.select(
-
                 [
                     "English",
                     "తెలుగు",
                     "हिन्दी",
                 ],
-
                 value="English",
-
             ).props(
-                "dense outlined"
+                "outlined dense"
             ).classes(
-                "w-36"
+                "w-32"
             )
 
-            
-
-           
+            ui.switch().props(
+                "color=green"
+            ).tooltip(
+                "Dark Mode"
+            ).on(
+                "update:model-value",
+                lambda e: dark.set_value(e.args),
+            )
