@@ -43,6 +43,8 @@ language = "en"
 
 
 ui.run(
+    host="0.0.0.0",
+    port=int(os.getenv("PORT", 8080)),
     title="Harvester Connect",
     reload=True,
 )
